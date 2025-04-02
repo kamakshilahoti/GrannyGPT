@@ -1,40 +1,43 @@
 import streamlit as st
-from huggingface_hub import hf_hub_download
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import requests
 
-# Function to interact with the Hugging Face model (Mistral, in this case)
-def huggingface_chat(message):
-    try:
-        # Replace with your actual model's repo_id on Hugging Face
-        model_repo = "mistral-7b"  # Example: replace with the correct model repo ID
-        model_file = "pytorch_model.bin"  # This is typically the model's weights file
+# Set your Mistral API endpoint and key
+MISTRAL_API_KEY = "33pbqQoXRyYkblt0qB7E9l3PJr0jK5uV"  # Replace with your Mistral API key
+MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"  # Change if the endpoint is different
 
-        # Download model from Hugging Face Hub
-        model_path = hf_hub_download(repo_id=model_repo, filename=model_file)
+# Function to interact with Mistral API
+def mistral_chat(message):
+    headers = {
+        "Authorization": f"Bearer {MISTRAL_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-        # Load the model and tokenizer from the downloaded path
-        model = AutoModelForCausalLM.from_pretrained(model_path)
-        tokenizer = AutoTokenizer.from_pretrained(model_path)
+    # Define the payload
+    payload = {
+        "messages": [{"role": "user", "content": message}],
+        "model": "mistral-7b",  # Replace with your model if different
+        "temperature": 0.7
+    }
 
-        # Tokenize the input message
-        inputs = tokenizer(message, return_tensors="pt")
+    # Send the request to Mistral API
+    response = requests.post(MISTRAL_API_URL, json=payload, headers=headers)
 
-        # Generate a response
-        outputs = model.generate(inputs["input_ids"], max_length=100)
-        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-        return response
-    except Exception as e:
-        return f"Error: {str(e)}"
+    if response.status_code == 200:
+        data = response.json()
+        return data.get("choices", [{}])[0].get("message", {}).get("content", "No response")
+    else:
+        return f"Error: {response.status_code} - {response.text}"
 
 # Streamlit UI for the chatbot
 def main():
     st.title("GrannyGPT Chatbot")
-    
-    message = st.text_input("Ask me anything:")
+    st.write("Ask me anything:")
 
+    # Get user input
+    message = st.text_input("Enter your message:")
+    
     if message:
-        response = huggingface_chat(message)
+        response = mistral_chat(message)
         st.write("Response: ", response)
 
 # Run the app
