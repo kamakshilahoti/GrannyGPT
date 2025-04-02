@@ -1,43 +1,40 @@
 import streamlit as st
-import gradio as gr
-import openai
 from huggingface_hub import hf_hub_download
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Initialize OpenAI and Hugging Face API
-# (Ensure you've set up API keys for these)
-
-def openai_chat(message):
-    # Make a call to OpenAI API to generate response
-    # Replace with your OpenAI model interaction code
-    response = OpenAI.Completion.create(
-        engine="text-davinci-003",
-        prompt=message,
-        max_tokens=150
-    )
-    return response['choices'][0]['text'].strip()
-
+# Function to interact with the Hugging Face model (Mistral, in this case)
 def huggingface_chat(message):
-    # Use Hugging Face models to respond (for example)
-    # (Assuming Hugging Face API setup is already in place)
-    model = hf_hub_download(repo_id="your-model-repo-id")
-    response = model.generate(message)
-    return response
+    try:
+        # Replace with your actual model's repo_id on Hugging Face
+        model_repo = "mistral-7b"  # Example: replace with the correct model repo ID
+        model_file = "pytorch_model.bin"  # This is typically the model's weights file
 
-# Define a basic function to handle chatbot
-def chatbot(message):
-    if st.button("Use OpenAI"):
-        return openai_chat(message)
-    else:
-        return huggingface_chat(message)
+        # Download model from Hugging Face Hub
+        model_path = hf_hub_download(repo_id=model_repo, filename=model_file)
+
+        # Load the model and tokenizer from the downloaded path
+        model = AutoModelForCausalLM.from_pretrained(model_path)
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+
+        # Tokenize the input message
+        inputs = tokenizer(message, return_tensors="pt")
+
+        # Generate a response
+        outputs = model.generate(inputs["input_ids"], max_length=100)
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        return response
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 # Streamlit UI for the chatbot
 def main():
-    st.title("Chatbot App")
+    st.title("GrannyGPT Chatbot")
     
     message = st.text_input("Ask me anything:")
-    
+
     if message:
-        response = chatbot(message)
+        response = huggingface_chat(message)
         st.write("Response: ", response)
 
 # Run the app
