@@ -1,5 +1,9 @@
 streamlit
-gradio
 pandas
 numpy
 # Add any other dependencies
+huggingface_hub==0.25.2
+openai==0.28
+gradio>=3.4.0
+gradio-client==0.1.1  # For the Gradio client
+requests==2.28.1  # For making HTTP requests to the API
