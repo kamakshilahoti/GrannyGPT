@@ -1,0 +1,5 @@
+streamlit
+gradio
+pandas
+numpy
+# Add any other dependencies
