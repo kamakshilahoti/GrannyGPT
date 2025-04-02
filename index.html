@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrannyGPT</title>
+</head>
+<body>
+  <h1>GrannyGPT Chatbot</h1>
+  <div>
+    <textarea id="userInput" placeholder="Ask Granny something..."></textarea>
+    <select id="mode">
+      <option value="Friendly">Friendly</option>
+      <option value="Tech-Scared">Tech-Scared</option>
+      <option value="Supportive">Supportive</option>
+      <option value="Sarcastic">Sarcastic</option>
+    </select>
+    <button onclick="sendMessage()">Ask Granny</button>
+  </div>
+  <h2>Granny's Response:</h2>
+  <div id="response"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
