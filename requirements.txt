@@ -1,7 +1,7 @@
 streamlit
 pandas
 numpy
-# Add any other dependencies
+setuptools
 huggingface_hub==0.25.2
 openai==0.28
 gradio>=3.4.0
