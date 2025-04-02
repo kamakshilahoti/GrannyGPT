@@ -1,6 +1,6 @@
 import streamlit as st
 import gradio as gr
-from openai import OpenAI
+import openai
 from huggingface_hub import hf_hub_download
 
 # Initialize OpenAI and Hugging Face API
