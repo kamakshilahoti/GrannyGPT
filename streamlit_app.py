@@ -2,10 +2,16 @@ import os
 import requests
 import streamlit as st
 
+
 # Option 1: Load API key from environment variables (local development)
 # Ensure to set the environment variable: export HF_API_KEY="your_private_api_key"
 # Option 2: Alternatively, for Streamlit Cloud, use secrets (check Streamlit secrets management below)
 # If running locally, make sure to create a `.env` file and use python-dotenv or set the environment variable directly.
+
+# Set your Mistral API endpoint and key
+MISTRAL_API_KEY = ""  # Replace with your Mistral API key
+MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"  # Change if the endpoint is different
+
 
 # Load API key from Streamlit Secrets (use this for Streamlit Cloud)
 HF_API_KEY = st.secrets.get("HF_API_KEY")
