@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Set your Mistral API endpoint and key
-MISTRAL_API_KEY = "33pbqQoXRyYkblt0qB7E9l3PJr0jK5uV"  # Replace with your Mistral API key
+MISTRAL_API_KEY = ""  # Replace with your Mistral API key
 MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions"  # Change if the endpoint is different
 
 # Function to interact with Mistral API
